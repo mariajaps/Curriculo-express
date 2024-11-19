@@ -1,16 +1,18 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL não está definida no arquivo .env');
+}
+
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL.includes('neon.tech') // Se o banco é Neon, habilita SSL
+    ssl: process.env.DATABASE_URL.includes('neon.tech') // Para Neon ou outro serviço específico
         ? { rejectUnauthorized: false }
-        : false, // Caso contrário, desativa SSL
+        : false,
 });
 
-console.log('Pool de conexões configurado com sucesso!');
-
-module.exports = pool; // Exporta o pool para ser usado em outros arquivos
+module.exports = pool;
 
 
 
